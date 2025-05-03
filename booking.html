@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Stay - Procare Suites & Resorts</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+  <!-- Header/Navbar -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">Procare Suites & Resorts</a>
+      
+      <button class="mobile-menu-button" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="rooms.html" class="nav-link">Rooms</a>
+        <a href="dining.html" class="nav-link">Dining</a>
+        <a href="facilities.html" class="nav-link">Facilities</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="booking.html" class="nav-link active book-now-btn">Book Now</a>
+      </nav>
+
+      <!-- Mobile Navigation -->
+      <div class="mobile-nav">
+        <div class="mobile-nav-content">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="rooms.html" class="nav-link">Rooms</a>
+          <a href="dining.html" class="nav-link">Dining</a>
+          <a href="facilities.html" class="nav-link">Facilities</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+          <a href="booking.html" class="nav-link active book-now-btn mobile-book-btn">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Header Section -->
+    <section class="page-header">
+      <div class="container">
+        <h1>Book Your Stay</h1>
+        <p>Plan your visit to Procare Suites with our easy booking system. Check availability and reserve your room today.</p>
+      </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="booking-section">
+      <div class="container">
+        <div id="booking-success" class="booking-success">
+          <h2>Booking Confirmed!</h2>
+          <p>Thank you for choosing Procare Suites & Resorts. Your booking has been received and we'll send a confirmation to your email shortly.</p>
+          <p>If you have any questions or need to modify your reservation, please contact us at <a href="mailto:procaresuites@gmail.com">procaresuites@gmail.com</a>.</p>
+          <div class="booking-success-buttons">
+            <a href="index.html" class="btn primary-btn">Return to Homepage</a>
+            <button id="new-booking-btn" class="btn outline-btn">Make Another Booking</button>
+          </div>
+        </div>
+
+        <div id="booking-form-container" class="booking-form-container">
+          <h2>Check Availability</h2>
+
+          <form id="booking-form" class="booking-form">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="check-in">Check-in Date <span class="required">*</span></label>
+                <div class="date-input">
+                  <input type="text" id="check-in" name="checkIn" required placeholder="Select date" readonly>
+                  <i class="far fa-calendar"></i>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="check-out">Check-out Date <span class="required">*</span></label>
+                <div class="date-input">
+                  <input type="text" id="check-out" name="checkOut" required placeholder="Select date" readonly>
+                  <i class="far fa-calendar"></i>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="room-type">Room Type</label>
+                <select id="room-type" name="roomType">
+                  <option value="any">Any room type</option>
+                  <option value="standard">Standard Room</option>
+                  <option value="deluxe">Deluxe Suite</option>
+                  <option value="executive">Executive Suite</option>
+                  <option value="family">Family Room</option>
+                  <option value="presidential">Presidential Suite</option>
+                </select>
+              </div>
+
+              <div class="form-group guests-group">
+                <div class="half-width">
+                  <label for="adults">Adults <span class="required">*</span></label>
+                  <select id="adults" name="adults" required>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                </div>
+
+                <div class="half-width">
+                  <label for="children">Children</label>
+                  <select id="children" name="children">
+                    <option value="0" selected>0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="special-requests">Special Requests</label>
+              <textarea id="special-requests" name="specialRequests" rows="3" placeholder="Any special requests or requirements"></textarea>
+            </div>
+
+            <button type="submit" id="check-availability-btn" class="btn primary-btn full-width">Check Availability</button>
+          </form>
+
+          <!-- Available Rooms -->
+          <div id="available-rooms" class="available-rooms">
+            <h2>Available Rooms</h2>
+            <div class="room-list" id="room-list">
+              <!-- Room items will be added dynamically via JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking Information -->
+    <section id="booking-info" class="booking-info-section">
+      <div class="container">
+        <div class="booking-info-container">
+          <h2>Booking Information</h2>
+
+          <div class="info-card">
+            <h3>Policies</h3>
+            <ul class="policy-list">
+              <li><i class="fas fa-check"></i> Check-in: 2:00 PM - 10:00 PM</li>
+              <li><i class="fas fa-check"></i> Check-out: 11:00 AM</li>
+              <li><i class="fas fa-check"></i> Free cancellation up to 48 hours before check-in</li>
+              <li><i class="fas fa-check"></i> Payment: Full payment required at check-in</li>
+              <li><i class="fas fa-check"></i> We accept cash, credit cards, and bank transfers</li>
+            </ul>
+
+            <div class="assistance-info">
+              <h3>Need Assistance?</h3>
+              <p>If you need help with your booking or have any questions, please don't hesitate to contact us:</p>
+              <div class="assistance-contacts">
+                <a href="mailto:procaresuites@gmail.com">procaresuites@gmail.com</a>
+                <a href="tel:+2341234567890">+234 123 456 7890</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Procare Suites & Resorts</h3>
+          <p>Experience luxury at our hotel in the heart of Lagos, with stylish accommodations, exquisite dining, and state-of-the-art amenities.</p>
+          <div class="social-links">
+            <a href="https://facebook.com/Procare-Suites-Resorts" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms & Suites</a></li>
+            <li><a href="dining.html">Dining</a></li>
+            <li><a href="facilities.html">Facilities</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="booking.html">Book Now</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Contact Us</h3>
+          <ul class="contact-info">
+            <li>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:procaresuites@gmail.com">procaresuites@gmail.com</a>
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+2341234567890">+234 123 456 7890</a>
+            </li>
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Victoria Island, Lagos, Nigeria</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="current-year"></span> Procare Suites & Resorts. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>
