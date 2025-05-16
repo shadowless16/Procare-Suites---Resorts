@@ -1,0 +1,10 @@
+sliding imgs  for room
+standard 25k
+classic 30k
+delux 35k
+executive 40k
+super executive 45k
+
+2 bed room apartment toggle option for 80k and 110k
+adding map
+hotspot around section

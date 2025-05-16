@@ -96,25 +96,71 @@ document.addEventListener("DOMContentLoaded", () => {
         // Add event listeners to book now buttons
         const bookNowButtons = document.querySelectorAll(".book-now-btn")
         bookNowButtons.forEach((button) => {
-          button.addEventListener("click", () => {
+          button.addEventListener("click", async () => {
             // Disable all book now buttons
             bookNowButtons.forEach((btn) => {
               btn.disabled = true
               btn.textContent = "Processing..."
             })
 
-            // Simulate booking process with a timeout
-            setTimeout(() => {
-              // Hide booking form and available rooms
-              bookingFormContainer.style.display = "none"
-              bookingInfo.style.display = "none"
+            // Gather booking form data from visible fields
+            const guestNameInput = document.getElementById("guest-name")
+            const guestEmailInput = document.getElementById("guest-email")
+            const guestName = guestNameInput ? guestNameInput.value.trim() : ''
+            const guestEmail = guestEmailInput ? guestEmailInput.value.trim() : ''
+            const checkIn = checkInInput.value
+            const checkOut = checkOutInput.value
+            const roomType = button.closest(".room-item").querySelector("h3").textContent
+            const guests = document.getElementById("adults").value
+            const specialRequests = document.getElementById("special-requests").value
 
-              // Show booking success message
-              bookingSuccess.style.display = "block"
+            // Validate required fields
+            if (!guestName || !guestEmail) {
+              alert("Full name and email are required to complete your booking.")
+              bookNowButtons.forEach((btn) => {
+                btn.disabled = false
+                btn.textContent = "Book Now"
+              })
+              return
+            }
 
-              // Scroll to top
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            }, 1500)
+            // Send booking data to backend
+            try {
+              const response = await fetch("/api/booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  guest_name: guestName,
+                  guest_email: guestEmail,
+                  check_in: checkIn,
+                  check_out: checkOut,
+                  room_type: roomType,
+                  guests: guests,
+                  special_requests: specialRequests
+                })
+              })
+              const result = await response.json()
+              if (result.success) {
+                // Hide booking form and available rooms
+                bookingFormContainer.style.display = "none"
+                bookingInfo.style.display = "none"
+                // Show booking success message
+                bookingSuccess.style.display = "block"
+                window.scrollTo({ top: 0, behavior: "smooth" })
+              } else {
+                alert(result.message || "Booking failed. Please try again.")
+                bookNowButtons.forEach((btn) => {
+                  btn.disabled = false
+                  btn.textContent = "Book Now"
+                })
+              }
+            } catch (err) {
+              alert("An error occurred while submitting your booking. Please try again later.")
+              bookNowButtons.forEach((btn) => {
+                btn.disabled = false
+                btn.textContent = "Book Now"
+              })
+            }
           })
         })
 
