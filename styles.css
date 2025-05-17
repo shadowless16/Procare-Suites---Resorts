@@ -1005,7 +1005,7 @@ p {
 }
 
 .dining-header-bg {
-  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/Deluxe2.jpg') center center/cover no-repeat;
+  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('https://t4.ftcdn.net/jpg/04/91/89/87/360_F_491898774_ybKuldKhiKxq349aRy4SZEOEyFXFV2Cg.jpg') center center/cover no-repeat;
   color: var(--white);
   padding: 4rem 0;
 }
