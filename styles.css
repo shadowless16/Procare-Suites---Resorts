@@ -1939,3 +1939,67 @@ p {
     height: 120px;
   }
 }
+
+/* Epe Town Section */
+.epe-town-section {
+  background-color: var(--gray-50);
+  padding: 4rem 0;
+}
+
+.epe-town-section h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+}
+
+.epe-town-intro {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 3rem;
+  font-size: 1.125rem;
+}
+
+.epe-town-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.epe-town-card {
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.epe-town-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+}
+
+.epe-town-card h3 {
+  color: var(--primary-dark);
+  margin-bottom: 1rem;
+}
+
+.epe-town-card p {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.epe-town-card i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  background-color: var(--white);
+}
