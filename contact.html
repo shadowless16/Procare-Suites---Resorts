@@ -142,17 +142,7 @@
               </ul>
             </div>
 
-            <div class="map-container">
-              <iframe 
-                src="https://www.google.com/maps/embed/v1/place?q=5+-+7,+Procare+Avenue,+Noforija,+Epe,+Lagos,+Nigeria&key=YOUR_GOOGLE_MAPS_API_KEY" 
-                width="100%" 
-                height="450" 
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-              </iframe>
-            </div>
+            <div class="map-container" id="ol-map" style="width: 100%; height: 450px;"></div>
 
             <div class="social-follow">
               <h3>Follow Us</h3>
@@ -257,5 +247,41 @@
 
   <script src="js/main.js"></script>
   <script src="js/contact.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ol@v7.4.0/dist/ol.js"></script>
+  <script>
+    // Coordinates for Procare Suites & Resorts (approximate, update if you have exact)
+    var longitude = 4.0015;
+    var latitude = 6.5735;
+    var map = new ol.Map({
+      target: 'ol-map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([longitude, latitude]),
+        zoom: 18
+      })
+    });
+    // Marker
+    var marker = new ol.Feature({
+      geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude]))
+    });
+    var vectorSource = new ol.source.Vector({
+      features: [marker]
+    });
+    var markerStyle = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1],
+        src: 'https://cdn.jsdelivr.net/npm/ol@v7.4.0/examples/data/icon.png'
+      })
+    });
+    var markerVectorLayer = new ol.layer.Vector({
+      source: vectorSource,
+      style: markerStyle
+    });
+    map.addLayer(markerVectorLayer);
+  </script>
 </body>
 </html>

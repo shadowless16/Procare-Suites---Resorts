@@ -2041,3 +2041,15 @@ p {
   border-color: var(--primary-dark);
   box-shadow: 0 0 0 3px var(--blue-100);
 }
+
+/* Hide OpenLayers default attribution for a cleaner look */
+.ol-attribution {
+  display: none !important;
+}
+
+/* Optionally, hide the OpenLayers controls if you want a minimal map */
+/*
+.ol-control {
+  display: none !important;
+}
+*/
