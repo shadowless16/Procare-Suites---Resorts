@@ -995,7 +995,7 @@ p {
 }
 
 .rooms-header-bg {
-  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/executive1.jpg') center center/cover no-repeat;
+  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/Super\ Executive1.jpg') center center/cover no-repeat;
   color: var(--white);
   padding: 4rem 0;
 }
@@ -1015,7 +1015,7 @@ p {
 }
 
 .facilities-header-bg {
-  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/Building picture4.jpg') center center/cover no-repeat;
+  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/areas1.jpg') center center/cover no-repeat;
   color: var(--white);
   padding: 4rem 0;
 }
@@ -1025,7 +1025,7 @@ p {
 }
 
 .contact-header-bg {
-  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/Building picture1.jpg') center center/cover no-repeat;
+  background: linear-gradient(rgba(30,41,59,0.55), rgba(30,41,59,0.55)), url('img/building1.jpg') center center/cover no-repeat;
   color: var(--white);
   padding: 4rem 0;
 }
@@ -1990,8 +1990,9 @@ p {
   font-size: 1rem;
 }
 
+/* Finalized Epe Town Section Icons */
 .epe-town-card i {
-  font-size: 2rem;
+  font-size: 1.25rem;
   color: var(--primary-color);
   margin-bottom: 1rem;
   display: inline-flex;
@@ -1999,7 +2000,44 @@ p {
   justify-content: center;
   width: 3rem;
   height: 3rem;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--gray-300);
   border-radius: 50%;
   background-color: var(--white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.epe-town-card i:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown Styling for 2 Bedroom Apartment */
+.apt-dropdown-label {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.apt-dropdown {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  color: var(--text-color);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.apt-dropdown:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.apt-dropdown:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px var(--blue-100);
 }

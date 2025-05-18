@@ -3,7 +3,7 @@ const roomsData = [
   {
     name: "Standard Room",
     price: 25000,
-    images: ["img/Deluxe1.jpg", "img/Deluxe2.jpg"],
+    images: ["img/standard room1.jpg", "img/standard room2.jpg"],
     description: "Cozy and affordable room with essential amenities, perfect for solo travelers or couples.",
     amenities: [
       { icon: "fas fa-wifi", label: "WiFi" },
@@ -16,7 +16,7 @@ const roomsData = [
   {
     name: "Classic Room",
     price: 30000,
-    images: ["img/executive1.jpg", "img/executive2.jpg"],
+    images: ["img/classic room1.jpg", "img/classic room2.jpg", "img/classic room3.jpg", "img/classic room4.jpg"],
     description: "Classic comfort with a queen-size bed and a relaxing atmosphere.",
     amenities: [
       { icon: "fas fa-wifi", label: "WiFi" },
@@ -29,7 +29,7 @@ const roomsData = [
   {
     name: "Deluxe Room",
     price: 35000,
-    images: ["img/Deluxe2.jpg", "img/Deluxe1.jpg"],
+    images: ["img/Deluxe1.jpg", "img/Deluxe2.jpg", "img/Deluxe3.jpg", "img/Deluxe4.jpg"],
     description: "Spacious room with extra amenities and a beautiful view.",
     amenities: [
       { icon: "fas fa-wifi", label: "WiFi" },
@@ -42,7 +42,7 @@ const roomsData = [
   {
     name: "Executive Room",
     price: 40000,
-    images: ["img/Super Executive1.jpg", "img/Super Executive2.jpg"],
+    images: ["img/executive1.jpg", "img/executive2.jpg",],
     description: "Premium room with workspace and luxury amenities for business travelers.",
     amenities: [
       { icon: "fas fa-wifi", label: "WiFi" },
@@ -56,7 +56,7 @@ const roomsData = [
   {
     name: "Super Executive Room",
     price: 45000,
-    images: ["img/Super Executive3.jpg", "img/Super Executive4.jpg"],
+    images: ["img/Super Executive1.jpg", "img/Super Executive2.jpg", "img/Super Executive3.jpg", "img/Super Executive4.jpg"],
     description: "Spacious suite with two queen-size beds, ideal for families or groups.",
     amenities: [
       { icon: "fas fa-wifi", label: "WiFi" },
@@ -68,10 +68,12 @@ const roomsData = [
   },
   {
     name: "2 Bedroom Apartment",
-    price: 80000,
-    priceAlt: 110000,
-    images: ["img/Super Executive4.jpg", "img/Super Executive3.jpg"],
-    description: "Luxury 2-bedroom apartment with living area and kitchen. Toggle for ₦80,000 or ₦110,000 option.",
+    priceOptions: [
+      { label: "₦80,000", value: 80000 },
+      { label: "₦110,000", value: 110000 }
+    ],
+    images: ["img/apartment1.jpg", "img/apartment2.jpg", "img/apartment3.jpg", "img/apartment4.jpg"],
+    description: "Luxury 2-bedroom apartment with living area and kitchen. Choose your preferred price option.",
     amenities: [
       { icon: "fas fa-wifi", label: "WiFi" },
       { icon: "fas fa-wind", label: "AC" },

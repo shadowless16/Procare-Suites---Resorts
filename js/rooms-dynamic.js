@@ -3,15 +3,24 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!grid || typeof roomsData === 'undefined') return;
   grid.innerHTML = '';
   roomsData.forEach((room, idx) => {
-    let priceHtml = `<p class="room-price">₦${room.price.toLocaleString()}/night</p>`;
-    // Toggle for 2 Bedroom Apartment
-    let toggleHtml = '';
-    if (room.priceAlt) {
-      priceHtml = `<p class="room-price">₦<span class="apt-price">${room.price.toLocaleString()}</span>/night</p>`;
-      toggleHtml = `<label class="apt-toggle-label"> <input type="checkbox" class="apt-toggle" data-idx="${idx}"> ₦110,000 Option </label>`;
+    let priceHtml = `<p class="room-price">₦${room.price?.toLocaleString() || room.priceOptions[0].value.toLocaleString()}/night</p>`;
+    let dropdownHtml = '';
+
+    // Dropdown for 2 Bedroom Apartment
+    if (room.priceOptions) {
+      priceHtml = `<p class="room-price">₦<span class="apt-price">${room.priceOptions[0].value.toLocaleString()}</span>/night</p>`;
+      dropdownHtml = `
+        <label class="apt-dropdown-label">
+          <select class="apt-dropdown" data-idx="${idx}">
+            ${room.priceOptions.map(option => `<option value="${option.value}">${option.label}</option>`).join('')}
+          </select>
+        </label>
+      `;
     }
+
     const imagesHtml = room.images.map((img, i) => `<img src="${img}" alt="${room.name} image"${i === 0 ? ' class="active"' : ''}>`).join('');
     const amenitiesHtml = room.amenities.map(a => `<span class="amenity"><i class="${a.icon}"></i> ${a.label}</span>`).join('');
+
     grid.innerHTML += `
       <div class="room-card">
         <div class="room-image room-image-slider">
@@ -26,23 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="room-booking">
             ${priceHtml}
             <a href="booking.html?room=${room.bookingParam}" class="btn primary-btn">Book Now</a>
-            ${toggleHtml}
+            ${dropdownHtml}
           </div>
         </div>
       </div>
     `;
   });
 
-  // Apartment price toggle logic
-  document.querySelectorAll('.apt-toggle').forEach(toggle => {
-    toggle.addEventListener('change', function() {
+  // Apartment price dropdown logic
+  document.querySelectorAll('.apt-dropdown').forEach(dropdown => {
+    dropdown.addEventListener('change', function() {
       const idx = this.getAttribute('data-idx');
-      const priceSpan = document.querySelectorAll('.apt-price')[0];
-      if (this.checked) {
-        priceSpan.textContent = '110,000';
-      } else {
-        priceSpan.textContent = '80,000';
-      }
+      const priceSpan = document.querySelectorAll('.apt-price')[idx];
+      priceSpan.textContent = parseInt(this.value).toLocaleString();
     });
   });
 
