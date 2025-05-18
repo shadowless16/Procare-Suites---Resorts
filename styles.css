@@ -205,8 +205,9 @@ p {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--white);
-  border-bottom: 1px solid var(--gray-200);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .header-container {
