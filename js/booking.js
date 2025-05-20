@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Send booking data to backend
             try {
-              const response = await fetch("/api/booking", {
+              const response = await fetch("http://localhost:8000/api/bookings", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
