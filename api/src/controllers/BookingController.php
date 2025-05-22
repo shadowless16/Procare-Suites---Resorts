@@ -38,7 +38,7 @@ class BookingController
             $mailPassword = 'info@procaresuites.com.ng'; // the password you set for this email
             $mailFrom = 'info@procaresuites.com.ng';
             $mailFromName = 'Procare Suites & Resorts';
-            $adminEmail = 'info@procaresuites.com.ng'; // or any admin email you want to receive notifications
+            $adminEmail = 'samanthaezomo5239@gmail.com'; // or any admin email you want to receive notifications
 
             require_once __DIR__ . '/../../vendor/autoload.php';
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
