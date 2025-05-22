@@ -63,9 +63,9 @@ class BookingController
                     ]
                 ];
                 $mail->setFrom($mailFrom, $mailFromName);
-                $mail->addAddress($adminEmail);
-                $mail->addAddress('akdavid4real@gmail.com'); // Add this line after $mail->addAddress($adminEmail);
-                // $mail->addAddress('yourgmail@gmail.com'); // Add your Gmail here for forwarding
+                $mail->addReplyTo($mailFrom, $mailFromName); // Add Reply-To header
+                $mail->addAddress('akdavid4real@gmail.com'); // Only send to Gmail for now
+                // $mail->addAddress($adminEmail); // Remove or comment out if same as sender
                 $mail->isHTML(true);
                 $logoUrl = 'https://i.ibb.co/mr4qydtP/logo-removebg-preview.png'; // Updated logo URL
                 $adminBody = '<table style="width:100%;max-width:600px;border:1px solid #e2e8f0;font-family:sans-serif;background:#f8fafc;border-radius:8px;overflow:hidden;">'
