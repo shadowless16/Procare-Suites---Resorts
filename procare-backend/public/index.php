@@ -20,15 +20,8 @@ require_once __DIR__ . '/../src/routes/api.php';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Normalize URI for cPanel subfolder deployment
-$uri = rtrim($requestUri, '/');
-$possibleEndpoints = [
-    '/api/bookings',
-    '/procare-backend/public/api/bookings',
-    '/~procares/procare-backend/public/api/bookings', // for some cPanel setups
-];
-
-if (in_array($uri, $possibleEndpoints) && $requestMethod === 'POST') {
+// Match any URI ending with /api/bookings
+if (preg_match('#/api/bookings$#', $requestUri) && $requestMethod === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $controller = new BookingController();
     $controller->createBooking($data);
