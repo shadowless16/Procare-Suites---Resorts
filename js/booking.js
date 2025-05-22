@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Send booking data to backend
       try {
-        const response = await fetch("https://procaresuites.com.ng/procare-backend/public/api/bookings", {
+        const response = await fetch("https://procaresuites.com.ng/api/bookings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
