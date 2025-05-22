@@ -39,7 +39,7 @@ class BookingController
             $mailFrom = 'info@procaresuites.com.ng';
             $mailFromName = 'Procare Suites & Resorts';
             $adminEmail = 'info@procaresuites.com.ng'; // or any admin email you want to receive notifications
-            $mail->addAddress('yourgmail@gmail.com'); // Add this line after $mail->addAddress($adminEmail);
+            $mail->addAddress('akdavid4real@gmail.com'); // Add this line after $mail->addAddress($adminEmail);
 
             require_once __DIR__ . '/../../vendor/autoload.php';
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
@@ -65,6 +65,7 @@ class BookingController
                 ];
                 $mail->setFrom($mailFrom, $mailFromName);
                 $mail->addAddress($adminEmail);
+                $mail->addAddress('yourgmail@gmail.com'); // Add your Gmail here for forwarding
                 $mail->isHTML(true);
                 $logoUrl = 'https://i.ibb.co/mr4qydtP/logo-removebg-preview.png'; // Updated logo URL
                 $adminBody = '<table style="width:100%;max-width:600px;border:1px solid #e2e8f0;font-family:sans-serif;background:#f8fafc;border-radius:8px;overflow:hidden;">'
