@@ -12,9 +12,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once '../src/database/Database.php';
-require_once '../src/controllers/BookingController.php';
-require_once __DIR__ . '/../src/routes/api.php';
+require_once __DIR__ . '/src/database/Database.php';
+require_once __DIR__ . '/src/controllers/BookingController.php';
+require_once __DIR__ . '/src/routes/api.php';
 
 // Simple router
 $requestMethod = $_SERVER['REQUEST_METHOD'];
