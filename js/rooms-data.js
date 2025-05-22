@@ -15,7 +15,7 @@ const roomsData = [
   },
   {
     name: "Deluxe Room",
-    price: 30000,
+    price: 35000,
     images: ["img/Deluxe1.jpg", "img/Deluxe2.jpg", "img/Deluxe3.jpg", "img/Deluxe4.jpg"],
     description: "Spacious room with extra amenities and a beautiful view.",
     amenities: [
@@ -28,7 +28,7 @@ const roomsData = [
   },
   {
     name: "Classic Room",
-    price: 35000,
+    price: 40000,
     images: ["img/classic room1.jpg", "img/classic room2.jpg", "img/classic room3.jpg", "img/classic room4.jpg"],
     description: "Classic comfort with a queen-size bed and a relaxing atmosphere.",
     amenities: [
@@ -41,7 +41,7 @@ const roomsData = [
   },
   {
     name: "Executive Room",
-    price: 40000,
+    price: 45000,
     images: ["img/executive1.jpg", "img/executive2.jpg",],
     description: "Premium room with workspace and luxury amenities for business travelers.",
     amenities: [
@@ -55,7 +55,7 @@ const roomsData = [
   },
   {
     name: "Super Executive Room",
-    price: 45000,
+    price: 50000,
     images: ["img/Super Executive1.jpg", "img/Super Executive2.jpg", "img/Super Executive3.jpg", "img/Super Executive4.jpg"],
     description: "Spacious suite with two queen-size beds, ideal for families or groups.",
     amenities: [
