@@ -20,12 +20,17 @@ require_once __DIR__ . '/../src/routes/api.php';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Match any URI ending with /api/bookings
-if (preg_match('#/api/bookings$#', $requestUri) && $requestMethod === 'POST') {
+// Debug: log the actual request URI
+error_log('Request URI: ' . $requestUri);
+
+// Match any URI containing /api/bookings
+if (strpos($requestUri, '/api/bookings') !== false && $requestMethod === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $controller = new BookingController();
     $controller->createBooking($data);
+    exit(); // Ensure only one response
 } else {
     http_response_code(404);
     echo json_encode(['success' => false, 'message' => 'Endpoint not found.']);
+    exit();
 }
