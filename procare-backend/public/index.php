@@ -20,11 +20,19 @@ require_once __DIR__ . '/../src/routes/api.php';
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-if ($requestUri === '/api/bookings' && $requestMethod === 'POST') {
+// Normalize URI for cPanel subfolder deployment
+$uri = rtrim($requestUri, '/');
+$possibleEndpoints = [
+    '/api/bookings',
+    '/procare-backend/public/api/bookings',
+    '/~procares/procare-backend/public/api/bookings', // for some cPanel setups
+];
+
+if (in_array($uri, $possibleEndpoints) && $requestMethod === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $controller = new BookingController();
     $controller->createBooking($data);
 } else {
     http_response_code(404);
-    echo json_encode(['message' => 'Not Found']);
+    echo json_encode(['success' => false, 'message' => 'Endpoint not found.']);
 }
