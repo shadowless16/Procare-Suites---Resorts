@@ -7,7 +7,6 @@
   <link rel="icon" href="img/logo-removebg-preview.png" type="image/x-icon"> 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
   <!-- Header/Navbar -->
@@ -88,7 +87,7 @@
               <div class="form-group">
                 <label for="check-in">Check-in Date <span class="required">*</span></label>
                 <div class="date-input">
-                  <input type="text" id="check-in" name="checkIn" required placeholder="Select date" readonly>
+                  <input type="date" id="check-in" name="checkIn" required>
                   <i class="far fa-calendar"></i>
                 </div>
               </div>
@@ -96,7 +95,7 @@
               <div class="form-group">
                 <label for="check-out">Check-out Date <span class="required">*</span></label>
                 <div class="date-input">
-                  <input type="text" id="check-out" name="checkOut" required placeholder="Select date" readonly>
+                  <input type="date" id="check-out" name="checkOut" required>
                   <i class="far fa-calendar"></i>
                 </div>
               </div>
@@ -243,25 +242,28 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
+    // Set min dates for native date pickers
     document.addEventListener("DOMContentLoaded", function() {
-      var checkInPicker = flatpickr("#check-in", {
-        minDate: "today",
-        dateFormat: "Y-m-d",
-        onChange: function(selectedDates, dateStr, instance) {
-          if (selectedDates[0]) {
-            checkOutPicker.set("minDate", new Date(selectedDates[0]).fp_incr(1));
-            if (checkOutPicker.selectedDates[0] && checkOutPicker.selectedDates[0] <= selectedDates[0]) {
-              checkOutPicker.setDate(new Date(selectedDates[0]).fp_incr(1));
+      var checkInInput = document.getElementById("check-in");
+      var checkOutInput = document.getElementById("check-out");
+      if (checkInInput && checkOutInput) {
+        var today = new Date().toISOString().split('T')[0];
+        checkInInput.setAttribute('min', today);
+        checkOutInput.setAttribute('min', today);
+        checkInInput.addEventListener('change', function() {
+          var checkInDate = checkInInput.value;
+          if (checkInDate) {
+            var minCheckOut = new Date(checkInDate);
+            minCheckOut.setDate(minCheckOut.getDate() + 1);
+            var minCheckOutStr = minCheckOut.toISOString().split('T')[0];
+            checkOutInput.setAttribute('min', minCheckOutStr);
+            if (checkOutInput.value <= checkInDate) {
+              checkOutInput.value = minCheckOutStr;
             }
           }
-        }
-      });
-      var checkOutPicker = flatpickr("#check-out", {
-        minDate: new Date().fp_incr(1),
-        dateFormat: "Y-m-d"
-      });
+        });
+      }
     });
   </script>
   <script src="js/main.js"></script>
