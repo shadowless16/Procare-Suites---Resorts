@@ -2054,3 +2054,7 @@ p {
   display: none !important;
 }
 */
+
+.msg-btn {
+  color: var(--white);
+}

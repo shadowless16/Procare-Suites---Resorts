@@ -14,21 +14,8 @@ const roomsData = [
     bookingParam: "standard"
   },
   {
-    name: "Classic Room",
-    price: 30000,
-    images: ["img/classic room1.jpg", "img/classic room2.jpg", "img/classic room3.jpg", "img/classic room4.jpg"],
-    description: "Classic comfort with a queen-size bed and a relaxing atmosphere.",
-    amenities: [
-      { icon: "fas fa-wifi", label: "WiFi" },
-      { icon: "fas fa-wind", label: "AC" },
-      { icon: "fas fa-tv", label: "TV" },
-      { icon: "fas fa-bath", label: "En-suite Bathroom" }
-    ],
-    bookingParam: "classic"
-  },
-  {
     name: "Deluxe Room",
-    price: 35000,
+    price: 30000,
     images: ["img/Deluxe1.jpg", "img/Deluxe2.jpg", "img/Deluxe3.jpg", "img/Deluxe4.jpg"],
     description: "Spacious room with extra amenities and a beautiful view.",
     amenities: [
@@ -38,6 +25,19 @@ const roomsData = [
       { icon: "fas fa-coffee", label: "Breakfast" }
     ],
     bookingParam: "deluxe"
+  },
+  {
+    name: "Classic Room",
+    price: 35000,
+    images: ["img/classic room1.jpg", "img/classic room2.jpg", "img/classic room3.jpg", "img/classic room4.jpg"],
+    description: "Classic comfort with a queen-size bed and a relaxing atmosphere.",
+    amenities: [
+      { icon: "fas fa-wifi", label: "WiFi" },
+      { icon: "fas fa-wind", label: "AC" },
+      { icon: "fas fa-tv", label: "TV" },
+      { icon: "fas fa-bath", label: "En-suite Bathroom" }
+    ],
+    bookingParam: "classic"
   },
   {
     name: "Executive Room",

@@ -65,7 +65,7 @@
           <p>Thank you for choosing Procare Suites & Resorts. Your booking has been received and we'll send a confirmation to your email shortly.</p>
           <p>If you have any questions or need to modify your reservation, please contact us at <a href="mailto:procaresuites@gmail.com">procaresuites@gmail.com</a>.</p>
           <div class="booking-success-buttons">
-            <a href="index.html" class="btn primary-btn">Return to Homepage</a>
+            <a href="index.html" class="btn msg-btn">Return to Homepage</a>
             <button id="new-booking-btn" class="btn outline-btn">Make Another Booking</button>
           </div>
         </div>
@@ -164,7 +164,7 @@
           <div class="info-card">
             <h3>Policies</h3>
             <ul class="policy-list">
-              <li><i class="fas fa-check"></i> Check-in: 2:00 PM - 10:00 PM</li>
+              <li><i class="fas fa-check"></i> Check-in: 1:00 PM - 10:00 PM</li>
               <li><i class="fas fa-check"></i> Check-out: 11:00 AM</li>
               <li><i class="fas fa-check"></i> Free cancellation up to 48 hours before check-in</li>
               <li><i class="fas fa-check"></i> Payment: Full payment required at check-in</li>
@@ -244,6 +244,26 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var checkInPicker = flatpickr("#check-in", {
+        minDate: "today",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+          if (selectedDates[0]) {
+            checkOutPicker.set("minDate", new Date(selectedDates[0]).fp_incr(1));
+            if (checkOutPicker.selectedDates[0] && checkOutPicker.selectedDates[0] <= selectedDates[0]) {
+              checkOutPicker.setDate(new Date(selectedDates[0]).fp_incr(1));
+            }
+          }
+        }
+      });
+      var checkOutPicker = flatpickr("#check-out", {
+        minDate: new Date().fp_incr(1),
+        dateFormat: "Y-m-d"
+      });
+    });
+  </script>
   <script src="js/main.js"></script>
   <script src="js/booking.js"></script>
 </body>

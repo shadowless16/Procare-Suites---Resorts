@@ -39,139 +39,71 @@ document.addEventListener("DOMContentLoaded", () => {
   const newBookingBtn = document.getElementById("new-booking-btn")
 
   if (bookingForm) {
-    bookingForm.addEventListener("submit", (e) => {
+    // Remove all previous submit event listeners to prevent multiple bindings
+    bookingForm.replaceWith(bookingForm.cloneNode(true));
+    const newBookingForm = document.getElementById("booking-form");
+    newBookingForm.addEventListener("submit", async function bookingSubmitHandler(e) {
       e.preventDefault()
+      e.stopImmediatePropagation() // Stronger: prevents all further listeners from being called
+      // Directly show processing message and hide form
+      bookingFormContainer.style.display = "none"
+      bookingInfo.style.display = "none"
+      availableRooms.style.display = "none"
+      bookingSuccess.style.display = "block"
+      bookingSuccess.querySelector("h2").textContent = "Booking Processing..."
+      bookingSuccess.querySelector("p").textContent = "Thank you for your booking. We are processing your request and will contact you soon."
+      bookingSuccess.scrollIntoView({ behavior: "smooth" })
+      // Gather booking form data
+      const guestNameInput = document.getElementById("guest-name")
+      const guestEmailInput = document.getElementById("guest-email")
+      const guestName = guestNameInput ? guestNameInput.value.trim() : ''
+      const guestEmail = guestEmailInput ? guestEmailInput.value.trim() : ''
+      const checkIn = checkInInput.value
+      const checkOut = checkOutInput.value
+      const guests = document.getElementById("adults").value
+      const specialRequests = document.getElementById("special-requests").value
 
-      // Disable button and show loading state
-      checkAvailabilityBtn.disabled = true
-      checkAvailabilityBtn.textContent = "Checking..."
+      // Validate required fields
+      if (!guestName || !guestEmail) {
+        alert("Full name and email are required to complete your booking.")
+        bookingFormContainer.style.display = "block"
+        bookingInfo.style.display = "block"
+        bookingSuccess.style.display = "none"
+        return
+      }
 
-      // Simulate availability check with a timeout
-      setTimeout(() => {
-        // Show available rooms
-        availableRooms.style.display = "block"
-
-        // Create mock room data
-        const rooms = [
-          {
-            id: 1,
-            type: "Standard Room",
-            available: 3,
-            price: "₦50,000",
-          },
-          {
-            id: 2,
-            type: "Deluxe Suite",
-            available: 2,
-            price: "₦75,000",
-          },
-          {
-            id: 3,
-            type: "Executive Suite",
-            available: 1,
-            price: "₦120,000",
-          },
-        ]
-
-        // Clear previous results
-        roomList.innerHTML = ""
-
-        // Add room items to the list
-        rooms.forEach((room) => {
-          const roomItem = document.createElement("div")
-          roomItem.className = "room-item"
-          roomItem.innerHTML = `
-            <div class="room-item-details">
-              <h3>${room.type}</h3>
-              <p>${room.available} room(s) available</p>
-            </div>
-            <div class="room-item-booking">
-              <p class="room-item-price">${room.price}<span>/night</span></p>
-              <button class="btn primary-btn book-now-btn" data-room-id="${room.id}">Book Now</button>
-            </div>
-          `
-          roomList.appendChild(roomItem)
-        })
-
-        // Add event listeners to book now buttons
-        const bookNowButtons = document.querySelectorAll(".book-now-btn")
-        bookNowButtons.forEach((button) => {
-          button.addEventListener("click", async () => {
-            // Disable all book now buttons
-            bookNowButtons.forEach((btn) => {
-              btn.disabled = true
-              btn.textContent = "Processing..."
-            })
-
-            // Gather booking form data from visible fields
-            const guestNameInput = document.getElementById("guest-name")
-            const guestEmailInput = document.getElementById("guest-email")
-            const guestName = guestNameInput ? guestNameInput.value.trim() : ''
-            const guestEmail = guestEmailInput ? guestEmailInput.value.trim() : ''
-            const checkIn = checkInInput.value
-            const checkOut = checkOutInput.value
-            const roomType = button.closest(".room-item").querySelector("h3").textContent
-            const guests = document.getElementById("adults").value
-            const specialRequests = document.getElementById("special-requests").value
-
-            // Validate required fields
-            if (!guestName || !guestEmail) {
-              alert("Full name and email are required to complete your booking.")
-              bookNowButtons.forEach((btn) => {
-                btn.disabled = false
-                btn.textContent = "Book Now"
-              })
-              return
-            }
-
-            // Send booking data to backend
-            try {
-              const response = await fetch("http://localhost:8000/api/bookings", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  guest_name: guestName,
-                  guest_email: guestEmail,
-                  check_in: checkIn,
-                  check_out: checkOut,
-                  room_type: roomType,
-                  guests: guests,
-                  special_requests: specialRequests
-                })
-              })
-              const result = await response.json()
-              if (result.success) {
-                // Hide booking form and available rooms
-                bookingFormContainer.style.display = "none"
-                bookingInfo.style.display = "none"
-                // Show booking success message
-                bookingSuccess.style.display = "block"
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              } else {
-                alert(result.message || "Booking failed. Please try again.")
-                bookNowButtons.forEach((btn) => {
-                  btn.disabled = false
-                  btn.textContent = "Book Now"
-                })
-              }
-            } catch (err) {
-              alert("An error occurred while submitting your booking. Please try again later.")
-              bookNowButtons.forEach((btn) => {
-                btn.disabled = false
-                btn.textContent = "Book Now"
-              })
-            }
+      // Send booking data to backend
+      try {
+        const response = await fetch("https://procaresuites.com.ng/procare-backend/public/api/bookings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            guest_name: guestName,
+            guest_email: guestEmail,
+            check_in: checkIn,
+            check_out: checkOut,
+            guests: guests,
+            special_requests: specialRequests,
+            room_type: document.getElementById("room-type") ? document.getElementById("room-type").value : ''
           })
         })
-
-        // Reset button state
-        checkAvailabilityBtn.disabled = false
-        checkAvailabilityBtn.textContent = "Check Availability"
-
-        // Scroll to available rooms
-        availableRooms.scrollIntoView({ behavior: "smooth" })
-      }, 1500)
-    })
+        const result = await response.json()
+        if (result.success) {
+          bookingSuccess.querySelector("h2").textContent = "Booking Confirmed!"
+          bookingSuccess.querySelector("p").textContent = "Your booking has been successfully processed. We will contact you shortly."
+        } else {
+          showBookingErrorModal(result.message || "Booking failed. Please try again.")
+          bookingSuccess.style.display = "none"
+          bookingFormContainer.style.display = "block"
+          bookingInfo.style.display = "block"
+        }
+      } catch (err) {
+        showBookingErrorModal("An error occurred while submitting your booking. Please try again later.")
+        bookingSuccess.style.display = "none"
+        bookingFormContainer.style.display = "block"
+        bookingInfo.style.display = "block"
+      }
+    }, { once: true }) // Ensure this handler only runs once per page load
   }
 
   // New booking button
@@ -207,5 +139,28 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     }
+  }
+
+  // Modal for booking errors
+  const errorModal = document.createElement('div')
+  errorModal.id = 'booking-error-modal'
+  errorModal.style.display = 'none'
+  errorModal.innerHTML = `
+    <div style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);z-index:9999;display:flex;align-items:center;justify-content:center;">
+      <div style="background:#fff;padding:2rem 2.5rem;border-radius:10px;max-width:90vw;box-shadow:0 2px 16px #0002;text-align:center;">
+        <h3 style="color:#e11d48;margin-bottom:1rem;">Booking Error</h3>
+        <div id="booking-error-message" style="color:#334155;font-size:1.1rem;margin-bottom:1.5rem;"></div>
+        <button id="close-booking-error-modal" style="background:#2563eb;color:#fff;padding:0.5rem 1.5rem;border:none;border-radius:6px;font-size:1rem;cursor:pointer;">OK</button>
+      </div>
+    </div>
+  `
+  document.body.appendChild(errorModal)
+
+  function showBookingErrorModal(message) {
+    document.getElementById('booking-error-message').textContent = message
+    errorModal.style.display = 'block'
+  }
+  document.getElementById('close-booking-error-modal').onclick = function() {
+    errorModal.style.display = 'none'
   }
 })

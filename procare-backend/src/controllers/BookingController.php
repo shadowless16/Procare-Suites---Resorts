@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../helpers/ResponseHelper.php';
+require_once __DIR__ . '/../database/Database.php';
+require_once __DIR__ . '/../models/Booking.php';
 
 class BookingController
 {
@@ -32,51 +34,98 @@ class BookingController
             // Send email notification to hotel admin and guest using SMTP (PHPMailer)
             // --- SMTP CONFIGURATION ---
             $mailHost = 'smtp.gmail.com'; // e.g., smtp.gmail.com
-            $mailUsername = 'your_gmail@gmail.com'; // your Gmail address
-            $mailPassword = 'your_app_password'; // your Gmail App Password
+            $mailUsername = 'akdavid4real@gmail.com'; // your Gmail address
+            $mailPassword = 'jagu zbau pxyj fcgk'; // your Gmail App Password
             $mailPort = 587;
-            $mailFrom = 'your_gmail@gmail.com'; // sender email
+            $mailFrom = 'akdavid4real@gmail.com'; // sender email
             $mailFromName = 'Procare Suites & Resorts';
-            $adminEmail = 'procaresuites@gmail.com'; // admin email
+            $adminEmail = 'akdavid4real@gmail.com'; // admin email
 
             require_once __DIR__ . '/../../vendor/autoload.php';
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
             try {
+                // Enable detailed SMTP debug output
+                $mail->SMTPDebug = 3; // Most verbose
+                $mail->Debugoutput = function($str, $level) {
+                    file_put_contents(__DIR__ . '/../../mail_debug.log', $str . PHP_EOL, FILE_APPEND);
+                };
                 $mail->isSMTP();
                 $mail->Host = $mailHost;
                 $mail->SMTPAuth = true;
                 $mail->Username = $mailUsername;
                 $mail->Password = $mailPassword;
-                $mail->SMTPSecure = 'tls';
-                $mail->Port = $mailPort;
+                // Switch to SSL/465 for Gmail
+                $mail->SMTPSecure = 'ssl';
+                $mail->Port = 465;
+                // $mail->SMTPSecure = 'tls';
+                // $mail->Port = 587;
+                $mail->SMTPOptions = [
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    ]
+                ];
                 $mail->setFrom($mailFrom, $mailFromName);
                 $mail->addAddress($adminEmail);
+                $mail->isHTML(true);
+                $logoUrl = 'https://i.ibb.co/mr4qydtP/logo-removebg-preview.png'; // Updated logo URL
+                $adminBody = '<table style="width:100%;max-width:600px;border:1px solid #e2e8f0;font-family:sans-serif;background:#f8fafc;border-radius:8px;overflow:hidden;">'
+                    . '<tr><td style="background:#2563eb;padding:24px 0;text-align:center;"><img src="' . $logoUrl . '" alt="Procare Suites & Resorts" style="max-width:160px;"></td></tr>'
+                    . '<tr><td style="padding:32px 24px 24px 24px;">'
+                    . '<h2 style="color:#2563eb;font-size:1.5rem;margin-bottom:0.5rem;">New Booking Received</h2>'
+                    . '<p style="font-size:1.1rem;color:#334155;margin-bottom:1.5rem;">A new booking has been made on your website. Here are the details:</p>'
+                    . '<table style="width:100%;margin:18px 0 24px 0;font-size:1rem;color:#1e293b;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e2e8f0;">'
+                    . '<tr><td style="padding:8px 12px;"><b>Name:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['guest_name']) . '</td></tr>'
+                    . '<tr style="background:#f1f5f9;"><td style="padding:8px 12px;"><b>Email:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['guest_email']) . '</td></tr>'
+                    . '<tr><td style="padding:8px 12px;"><b>Check-in:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['check_in']) . '</td></tr>'
+                    . '<tr style="background:#f1f5f9;"><td style="padding:8px 12px;"><b>Check-out:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['check_out']) . '</td></tr>'
+                    . '<tr><td style="padding:8px 12px;"><b>Room Type:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['room_type']) . '</td></tr>'
+                    . '<tr style="background:#f1f5f9;"><td style="padding:8px 12px;"><b>Guests:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['guests']) . '</td></tr>'
+                    . '<tr><td style="padding:8px 12px;"><b>Special Requests:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['special_requests']) . '</td></tr>'
+                    . '</table>'
+                    . '<div style="margin-top:2rem;text-align:center;">'
+                    . '<a href="https://procaresuites.com.ng" style="display:inline-block;padding:0.75rem 2rem;background:#2563eb;color:#fff;border-radius:6px;text-decoration:none;font-weight:600;font-size:1rem;">Visit Our Website</a>'
+                    . '</div>'
+                    . '<p style="color:#64748b;font-size:0.95rem;margin-top:2.5rem;text-align:center;">Warm regards,<br>Procare Suites & Resorts Team<br><span style="color:#94a3b8;font-size:0.9rem;">&copy; 2025 Procare Suites & Resorts</span></p>'
+                    . '</td></tr></table>';
                 $mail->Subject = 'New Booking Received - Procare Suites & Resorts';
-                $mail->Body = "A new booking has been received.\n\n" .
-                    "Name: {$data['guest_name']}\n" .
-                    "Email: {$data['guest_email']}\n" .
-                    "Check-in: {$data['check_in']}\n" .
-                    "Check-out: {$data['check_out']}\n" .
-                    "Room Type: {$data['room_type']}\n" .
-                    "Guests: {$data['guests']}\n" .
-                    "Special Requests: {$data['special_requests']}\n";
+                $mail->Body = $adminBody;
+                $mail->AltBody = "A new booking has been received.\n\nName: {$data['guest_name']}\nEmail: {$data['guest_email']}\nCheck-in: {$data['check_in']}\nCheck-out: {$data['check_out']}\nRoom Type: {$data['room_type']}\nGuests: {$data['guests']}\nSpecial Requests: {$data['special_requests']}\n";
                 $mail->send();
                 // Send confirmation to guest
                 $mail->clearAddresses();
                 $mail->addAddress($data['guest_email']);
+                $guestLogoUrl = 'https://i.ibb.co/mr4qydtP/logo-removebg-preview.png'; // Updated logo URL
+                $guestBody = '<table style="width:100%;max-width:600px;border:1px solid #e2e8f0;font-family:sans-serif;background:#f8fafc;border-radius:8px;overflow:hidden;">'
+                    . '<tr><td style="background:#2563eb;padding:24px 0;text-align:center;"><img src="' . $guestLogoUrl . '" alt="Procare Suites & Resorts" style="max-width:160px;"></td></tr>'
+                    . '<tr><td style="padding:32px 24px 24px 24px;">'
+                    . '<h2 style="color:#2563eb;font-size:1.5rem;margin-bottom:0.5rem;">Thank You for Your Booking!</h2>'
+                    . '<p style="font-size:1.1rem;color:#334155;margin-bottom:1.5rem;">Dear ' . htmlspecialchars($data['guest_name']) . ',</p>'
+                    . '<p style="font-size:1rem;color:#475569;margin-bottom:1.5rem;">We are delighted to confirm your reservation at <b style="color:#2563eb;">Procare Suites & Resorts</b>. Here are your booking details:</p>'
+                    . '<table style="width:100%;margin:18px 0 24px 0;font-size:1rem;color:#1e293b;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e2e8f0;">'
+                    . '<tr><td style="padding:8px 12px;"><b>Check-in:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['check_in']) . '</td></tr>'
+                    . '<tr style="background:#f1f5f9;"><td style="padding:8px 12px;"><b>Check-out:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['check_out']) . '</td></tr>'
+                    . '<tr><td style="padding:8px 12px;"><b>Room Type:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['room_type']) . '</td></tr>'
+                    . '<tr style="background:#f1f5f9;"><td style="padding:8px 12px;"><b>Guests:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['guests']) . '</td></tr>'
+                    . '<tr><td style="padding:8px 12px;"><b>Special Requests:</b></td><td style="padding:8px 12px;">' . htmlspecialchars($data['special_requests']) . '</td></tr>'
+                    . '</table>'
+                    . '<p style="font-size:1rem;color:#475569;margin-bottom:1.5rem;">If you have any questions or need to make changes, simply reply to this email or contact our front desk. <br>We look forward to welcoming you and making your stay exceptional!</p>'
+                    . '<div style="margin-top:2rem;text-align:center;">'
+                    . '<a href="https://procaresuites.com.ng" style="display:inline-block;padding:0.75rem 2rem;background:#2563eb;color:#fff;border-radius:6px;text-decoration:none;font-weight:600;font-size:1rem;">Visit Our Website</a>'
+                    . '</div>'
+                    . '<p style="color:#64748b;font-size:0.95rem;margin-top:2.5rem;text-align:center;">Warm regards,<br>Procare Suites & Resorts Team<br><span style="color:#94a3b8;font-size:0.9rem;">&copy; 2025 Procare Suites & Resorts</span></p>'
+                    . '</td></tr></table>';
                 $mail->Subject = 'Your Booking at Procare Suites & Resorts';
-                $mail->Body = "Dear {$data['guest_name']},\n\nThank you for booking with Procare Suites & Resorts!\n\n" .
-                    "We have received your booking and will contact you soon to confirm.\n\n" .
-                    "Booking Details:\n" .
-                    "Check-in: {$data['check_in']}\n" .
-                    "Check-out: {$data['check_out']}\n" .
-                    "Room Type: {$data['room_type']}\n" .
-                    "Guests: {$data['guests']}\n" .
-                    "Special Requests: {$data['special_requests']}\n\n" .
-                    "If you have any questions, reply to this email.";
+                $mail->Body = $guestBody;
+                $mail->AltBody = "Dear {$data['guest_name']},\nThank you for booking with Procare Suites & Resorts!\nCheck-in: {$data['check_in']}\nCheck-out: {$data['check_out']}\nRoom Type: {$data['room_type']}\nGuests: {$data['guests']}\nSpecial Requests: {$data['special_requests']}\n";
                 $mail->send();
             } catch (\Exception $e) {
-                // Don't fail booking if email fails, but log or notify
+                ResponseHelper::sendJson([
+                    'success' => false,
+                    'message' => 'Booking saved, but email failed: ' . $e->getMessage()
+                ], 500);
+                return;
             }
             ResponseHelper::sendJson(['success' => true, 'message' => 'Booking successful! Confirmation email sent.']);
         } catch (Exception $e) {
