@@ -1,32 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize date pickers
+  // Use native date pickers only
   const checkInInput = document.getElementById("check-in")
   const checkOutInput = document.getElementById("check-out")
-
-  if (checkInInput && checkOutInput) {
-    // Initialize check-in date picker
-    const checkInPicker = flatpickr(checkInInput, {
-      minDate: "today",
-      dateFormat: "Y-m-d",
-      onChange: (selectedDates, dateStr) => {
-        // Update the minimum date of check-out to be the day after check-in
-        if (typeof checkOutPicker !== "undefined") {
-          checkOutPicker.set("minDate", new Date(selectedDates[0]).fp_incr(1))
-
-          // If check-out date is earlier than check-in date, reset it
-          if (checkOutPicker.selectedDates[0] && checkOutPicker.selectedDates[0] <= selectedDates[0]) {
-            checkOutPicker.setDate(new Date(selectedDates[0]).fp_incr(1))
-          }
-        }
-      },
-    })
-
-    // Initialize check-out date picker
-    const checkOutPicker = flatpickr(checkOutInput, {
-      minDate: new Date().fp_incr(1),
-      dateFormat: "Y-m-d",
-    })
-  }
 
   // Booking form submission
   const bookingForm = document.getElementById("booking-form")
@@ -39,13 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const newBookingBtn = document.getElementById("new-booking-btn")
 
   if (bookingForm) {
-    // Remove all previous submit event listeners to prevent multiple bindings
-    bookingForm.replaceWith(bookingForm.cloneNode(true));
-    const newBookingForm = document.getElementById("booking-form");
-    newBookingForm.addEventListener("submit", async function bookingSubmitHandler(e) {
+    bookingForm.addEventListener("submit", async function bookingSubmitHandler(e) {
       e.preventDefault()
-      e.stopImmediatePropagation() // Stronger: prevents all further listeners from being called
-      // Directly show processing message and hide form
+      e.stopImmediatePropagation()
       bookingFormContainer.style.display = "none"
       bookingInfo.style.display = "none"
       availableRooms.style.display = "none"
@@ -103,23 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
         bookingFormContainer.style.display = "block"
         bookingInfo.style.display = "block"
       }
-    }, { once: true }) // Ensure this handler only runs once per page load
+    }, { once: true })
   }
 
   // New booking button
   if (newBookingBtn) {
     newBookingBtn.addEventListener("click", () => {
-      // Hide success message
       bookingSuccess.style.display = "none"
-
-      // Show booking form and info
       bookingFormContainer.style.display = "block"
       bookingInfo.style.display = "block"
-
-      // Reset form
       bookingForm.reset()
-
-      // Hide available rooms
       availableRooms.style.display = "none"
     })
   }
@@ -127,11 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Pre-select room type if coming from rooms page
   const urlParams = new URLSearchParams(window.location.search)
   const roomParam = urlParams.get("room")
-
   if (roomParam) {
     const roomTypeSelect = document.getElementById("room-type")
     if (roomTypeSelect) {
-      // Find the option that matches the room parameter
       for (let i = 0; i < roomTypeSelect.options.length; i++) {
         if (roomTypeSelect.options[i].value === roomParam) {
           roomTypeSelect.selectedIndex = i
