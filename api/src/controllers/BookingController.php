@@ -36,7 +36,7 @@ class BookingController
             $mailHost = 'smtp.gmail.com'; // e.g., smtp.gmail.com
             $mailUsername = 'akdavid4real@gmail.com'; // your Gmail address
             $mailPassword = 'jagu zbau pxyj fcgk'; // your Gmail App Password
-            $mailPort = 587;
+            $mailPort = 465;
             $mailFrom = 'akdavid4real@gmail.com'; // sender email
             $mailFromName = 'Procare Suites & Resorts';
             $adminEmail = 'akdavid4real@gmail.com'; // admin email
