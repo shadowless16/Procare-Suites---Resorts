@@ -32,14 +32,13 @@ class BookingController
         try {
             $this->db->executeQuery($query, $params);
             // Send email notification to hotel admin and guest using SMTP (PHPMailer)
-            // --- SMTP CONFIGURATION ---
-            $mailHost = 'smtp.gmail.com'; // e.g., smtp.gmail.com
-            $mailUsername = 'akdavid4real@gmail.com'; // your Gmail address
-            $mailPassword = 'jagu zbau pxyj fcgk'; // your Gmail App Password
-            $mailPort = 465;
-            $mailFrom = 'akdavid4real@gmail.com'; // sender email
+            // --- SMTP CONFIGURATION for cPanel ---
+            $mailHost = 'localhost'; // or 'mail.procaresuites.com.ng' if localhost doesn't work
+            $mailUsername = 'info@procaresuites.com.ng'; // your new cPanel email
+            $mailPassword = 'info@procaresuites.com.ng'; // the password you set for this email
+            $mailFrom = 'info@procaresuites.com.ng';
             $mailFromName = 'Procare Suites & Resorts';
-            $adminEmail = 'akdavid4real@gmail.com'; // admin email
+            $adminEmail = 'info@procaresuites.com.ng'; // or any admin email you want to receive notifications
 
             require_once __DIR__ . '/../../vendor/autoload.php';
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
@@ -54,14 +53,8 @@ class BookingController
                 $mail->SMTPAuth = true;
                 $mail->Username = $mailUsername;
                 $mail->Password = $mailPassword;
-                // Use SSL/465 for live server, TLS/587 for local
-                if ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_NAME'] === '127.0.0.1') {
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port = 587;
-                } else {
-                    $mail->SMTPSecure = 'ssl';
-                    $mail->Port = 465;
-                }
+                $mail->SMTPSecure = '';
+                $mail->Port = 25; // or 587 if 25 doesn't work
                 $mail->SMTPOptions = [
                     'ssl' => [
                         'verify_peer' => false,
