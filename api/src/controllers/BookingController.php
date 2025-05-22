@@ -54,11 +54,14 @@ class BookingController
                 $mail->SMTPAuth = true;
                 $mail->Username = $mailUsername;
                 $mail->Password = $mailPassword;
-                // Switch to SSL/465 for Gmail
-                $mail->SMTPSecure = 'ssl';
-                $mail->Port = 465;
-                // $mail->SMTPSecure = 'tls';
-                // $mail->Port = 587;
+                // Use SSL/465 for live server, TLS/587 for local
+                if ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_NAME'] === '127.0.0.1') {
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
+                } else {
+                    $mail->SMTPSecure = 'ssl';
+                    $mail->Port = 465;
+                }
                 $mail->SMTPOptions = [
                     'ssl' => [
                         'verify_peer' => false,
