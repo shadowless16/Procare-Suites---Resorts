@@ -69,8 +69,8 @@ const roomsData = [
   {
     name: "2 Bedroom Apartment",
     priceOptions: [
-      { label: "₦80,000", value: 80000 },
-      { label: "₦110,000", value: 110000 }
+      { label: "₦110,000", value: 110000 },
+      { label: "₦120,000", value: 120000 }
     ],
     images: ["img/apartment1.jpg", "img/apartment2.jpg", "img/apartment3.jpg", "img/apartment4.jpg"],
     description: "Luxury 2-bedroom apartment with living area and kitchen. Choose your preferred price option.",
